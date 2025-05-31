@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n" />
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <!-- Your custom logger -->
+    <Logger name="SBDL" level="info" additivity="false">
+      <AppenderRef ref="Console" />
+    </Logger>
+
+    <!-- Mute Spark and Hadoop logs -->
+    <Logger name="org.apache.spark" level="off" additivity="false">
+      <AppenderRef ref="Console" />
+    </Logger>
+
+    <Logger name="org.apache.hadoop" level="off" additivity="false">
+      <AppenderRef ref="Console" />
+    </Logger>
+
+    <Logger name="org.apache" level="off" additivity="false">
+      <AppenderRef ref="Console" />
+    </Logger>
+
+    <Root level="off">
+      <AppenderRef ref="Console" />
+    </Root>
+  </Loggers>
+</Configuration>
