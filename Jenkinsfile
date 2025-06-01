@@ -4,43 +4,38 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'pipenv install --dev'
+                bat 'pipenv install --dev'
             }
         }
-
         stage('Test') {
             steps {
-                sh 'pipenv run pytest'
+                bat 'pipenv run pytest'
             }
         }
-
         stage('Package') {
             when {
-                anyOf {
-                    branch 'master'
-                    branch 'release'
-                }
+                anyOf { branch 'master'; branch 'release' }
             }
             steps {
-                sh 'zip -r sbdl.zip lib'
+                bat 'powershell -Command "Compress-Archive -Path lib -DestinationPath sbdl.zip"'
             }
         }
-
         stage('Release') {
             when {
                 branch 'release'
             }
             steps {
-                echo 'Release stage: Add deployment logic if server available'
+                bat 'echo Release step - skipping SCP on Windows for now'
+                // Replace with WinSCP or skip for now if you don't have a remote server
             }
         }
-
         stage('Deploy') {
             when {
                 branch 'master'
             }
             steps {
-                echo 'Deploy stage: Add production deployment logic if server available'
+                bat 'echo Deploy step - skipping SCP on Windows for now'
+                // Replace with WinSCP or skip for now if you don't have a remote server
             }
         }
     }
