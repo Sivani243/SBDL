@@ -7,11 +7,13 @@ pipeline {
                 bat 'pipenv install --dev'
             }
         }
+
         stage('Test') {
             steps {
                 bat 'pipenv run pytest'
             }
         }
+
         stage('Package') {
             when {
                 anyOf { branch 'master'; branch 'release' }
@@ -20,22 +22,24 @@ pipeline {
                 bat 'powershell -Command "Compress-Archive -Path lib -DestinationPath sbdl.zip"'
             }
         }
+
         stage('Release') {
             when {
                 branch 'release'
             }
             steps {
-                bat 'echo Release step - skipping SCP on Windows for now'
-                // Replace with WinSCP or skip for now if you don't have a remote server
+                bat 'echo Release step - SCP skipped on Windows'
+                // If needed: implement file copy using WinSCP or similar here
             }
         }
+
         stage('Deploy') {
             when {
                 branch 'master'
             }
             steps {
-                bat 'echo Deploy step - skipping SCP on Windows for now'
-                // Replace with WinSCP or skip for now if you don't have a remote server
+                bat 'echo Deploy step - SCP skipped on Windows'
+                // If needed: implement file copy using WinSCP or similar here
             }
         }
     }
