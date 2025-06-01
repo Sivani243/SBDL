@@ -2,21 +2,45 @@ pipeline {
     agent any
 
     stages {
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
                 sh 'pipenv install --dev'
             }
         }
 
-        stage('Run Tests') {
+        stage('Test') {
             steps {
                 sh 'pipenv run pytest'
             }
         }
 
-        stage('Package Project') {
+        stage('Package') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'release'
+                }
+            }
             steps {
-                sh 'zip -r sbdl.zip lib conf log4j2.xml sbdl_main.py sbdl_submit.sh'
+                sh 'zip -r sbdl.zip lib'
+            }
+        }
+
+        stage('Release') {
+            when {
+                branch 'release'
+            }
+            steps {
+                echo 'Release stage: Add deployment logic if server available'
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Deploy stage: Add production deployment logic if server available'
             }
         }
     }
